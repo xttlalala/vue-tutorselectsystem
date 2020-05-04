@@ -1,17 +1,23 @@
 <template>
   <div id="app">
-    <sidebar id="sidebar" />
-    <router-view id="router" v-bind:key="$route.path" />
+    <!-- <router-view id="router" v-bind:key="$route.path" /> -->
+    <index v-if="isLogin" />
+    <login v-else />
     <alertdialog />
   </div>
 </template>
 
 <script>
-import sidebar from "@/views/Sidebar";
+import { mapState } from "vuex";
 export default {
   components: {
-    sidebar,
-    alertdialog: () => import("@/components/AlertDialog.vue")
+    alertdialog: () => import("@/components/AlertDialog.vue"),
+    login: () => import("@/views/Login.vue"),
+    // welcome: () => import("@/views/Welcome.vue")
+    index: () => import("@/views/Index.vue")
+  },
+  computed: {
+    ...mapState(["isLogin"])
   }
 };
 </script>
@@ -21,16 +27,15 @@ export default {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  margin-top: 20px;
 }
-#sidebar {
-  width: 300px;
-  display: inline-block;
-  border: 1px solid red;
-  vertical-align: top;
-}
+
 #router {
   display: inline-block;
   border: 1px solid red;
+}
+
+#app {
+  width: 100%;
+  height: 900px;
 }
 </style>

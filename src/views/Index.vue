@@ -1,23 +1,41 @@
 <template>
-  <div>
-    <h1>后端提供数据</h1>
-    <p>
-      基于sessionstorage中数据判断用户登陆状态，登录后加载此组件。
-      <br />
-    </p>
-    <p v-if="tutor">
-      {{ tutor.user.name }}
-    </p>
+  <div class="container">
+    <el-row>
+      <el-col :span="4">
+        <div class="grid-content bg-purple-dark">
+          <sidebar id="sidebar" />
+        </div>
+      </el-col>
+      <el-col :span="20">
+        <div class="grid-content bg-purple-dark">
+          <myheader />
+          <router-view id="router" v-bind:key="$route.path" />
+        </div>
+      </el-col>
+    </el-row>
+    <!-- <div id="content">
+      
+    </div> -->
   </div>
 </template>
+
+<style scoped>
+.container {
+  background-color: aliceblue;
+  display: inline-block;
+  width: 100%;
+}
+</style>
+
+<style scoped></style>
+
 <script>
-import { mapState } from "vuex";
+import sidebar from "@/views/Sidebar";
+import myheader from "@/views/Header";
 export default {
-  created() {
-    this.$store.dispatch("backendindex");
-  },
-  computed: {
-    ...mapState(["tutor"])
+  components: {
+    sidebar,
+    myheader
   }
 };
 </script>
