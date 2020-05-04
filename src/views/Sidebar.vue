@@ -15,18 +15,19 @@
       background-color="#545c64"
       text-color="#fff"
       active-text-color="#ffd04b"
+      router
     >
       <!-- default-active 当前激活菜单的 index -->
-      <el-menu-item index="1">
+      <el-menu-item index="1" route="/homepage">
         <i class="el-icon-menu"></i>
         <span slot="title">我的信息</span>
       </el-menu-item>
-      <el-menu-item index="2">
+      <el-menu-item index="2" route="/students">
         <i class="el-icon-menu"></i>
         <span slot="title">学生管理</span>
       </el-menu-item>
-      <el-menu-item index="3">
-        <i class="el-icon-document"></i>
+      <el-menu-item index="3" route="/courses">
+        <i class="el-icon-menu"></i>
         <span slot="title">课程管理</span>
       </el-menu-item>
     </el-menu>

@@ -31,7 +31,6 @@ export default {
 
 #router {
   display: inline-block;
-  border: 1px solid red;
 }
 
 #app {

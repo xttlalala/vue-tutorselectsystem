@@ -10,7 +10,9 @@
 import { mapState } from "vuex";
 export default {
   created() {
-    this.$store.dispatch("backendindex");
+    if (sessionStorage.getItem("role") == "6983f953b49c88210cb9")
+      // console.log(sessionStorage.getItem("role"));
+      this.$store.dispatch("backendindex");
   },
   computed: {
     ...mapState(["tutor"])
@@ -23,7 +25,7 @@ export default {
   background-color: #545c64;
   color: white;
   width: 100%;
-  height: auto;
+  height: 70px;
   padding: 20px;
   text-align: right;
 }

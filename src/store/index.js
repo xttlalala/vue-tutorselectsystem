@@ -10,6 +10,7 @@ Vue.use(Vuex);
 const myState = {
   exception: { message: null },
   isLogin: false,
+  isUpdatePwd: false,
   tutor: null
   // courses: null
 };
@@ -19,6 +20,9 @@ const myMutations = {
   },
   [types.LOGIN](state, data) {
     state.isLogin = data;
+  },
+  [types.UPDATE_PWD](state, data) {
+    state.isUpdatePwd = data;
   },
   tutor(state, data) {
     state.tutor = data;
@@ -43,6 +47,10 @@ const myActions = {
     let resp = await axios.get("tutor/index");
     commit("tutor", resp.data.tutor);
     // commit("courses", resp.data.courses);
+  },
+  async [types.UPDATE_PWD]({ commit }, data) {
+    let resp = await axios.patch("updatePwd", data);
+    commit(types.UPDATE_PWD, true);
   }
 };
 export default new Vuex.Store({
