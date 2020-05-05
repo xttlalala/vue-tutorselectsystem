@@ -11,7 +11,11 @@ const myState = {
   exception: { message: null },
   isLogin: false,
   isUpdatePwd: false,
-  tutor: null
+  isUpdateNote: false,
+  isUpdateDirections: false,
+  tutor: null,
+  directions: null,
+  tcourses: null
   // courses: null
 };
 const myMutations = {
@@ -24,8 +28,20 @@ const myMutations = {
   [types.UPDATE_PWD](state, data) {
     state.isUpdatePwd = data;
   },
+  [types.UPDATE_NOTE](state, data) {
+    state.isUpdateNote = data;
+  },
+  [types.UPDATE_DIRECTIONS](state, data) {
+    state.isUpdateDirections = data;
+  },
   tutor(state, data) {
     state.tutor = data;
+  },
+  directions(state, data) {
+    state.directions = data;
+  },
+  tcourses(state, data) {
+    state.tcourses = data;
   }
   // courses(state, data) {
   //   state.courses = data;
@@ -48,9 +64,26 @@ const myActions = {
     commit("tutor", resp.data.tutor);
     // commit("courses", resp.data.courses);
   },
+  async coursesindex({ commit }) {
+    let resp = await axios.get("tutor/index");
+    commit("tcourses", resp.data.course);
+    // commit("courses", resp.data.courses);
+  },
+  async directionsindex({ commit }) {
+    let resp = await axios.get("directions");
+    commit("directions", resp.data.directions);
+  },
   async [types.UPDATE_PWD]({ commit }, data) {
     let resp = await axios.patch("updatePwd", data);
     commit(types.UPDATE_PWD, true);
+  },
+  async [types.UPDATE_NOTE]({ commit }, data) {
+    let resp = await axios.patch("tutor/settings", data);
+    commit(types.UPDATE_NOTE, true);
+  },
+  async [types.UPDATE_DIRECTIONS]({ commit }, data) {
+    let resp = await axios.post("tutor/updateDirections", data);
+    commit(types.UPDATE_DIRECTIONS, true);
   }
 };
 export default new Vuex.Store({

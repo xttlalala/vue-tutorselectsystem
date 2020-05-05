@@ -30,6 +30,10 @@
         <i class="el-icon-menu"></i>
         <span slot="title">课程管理</span>
       </el-menu-item>
+      <el-menu-item index="4" route="/directions">
+        <i class="el-icon-menu"></i>
+        <span slot="title">方向管理</span>
+      </el-menu-item>
     </el-menu>
     <!-- </el-col>
     </el-row> -->

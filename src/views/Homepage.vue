@@ -54,10 +54,36 @@
         </el-col>
         <el-col :span="4">
           <div class="grid-content bg-purple">
-            <el-button type="primary" plain>编辑信息</el-button>
+            <el-button @click="open2 = true" type="primary" plain>
+              编辑信息
+            </el-button>
           </div>
         </el-col>
       </el-row>
+      <el-dialog title="编辑信息" :visible.sync="open2">
+        <el-form>
+          <el-form-item label="招收最大学生数" :label-width="formLabelWidth">
+            <el-input
+              type="text"
+              v-model="maxStuNum"
+              autocomplete="off"
+            ></el-input>
+          </el-form-item>
+          <el-form-item label="招收学生最末排名" :label-width="formLabelWidth">
+            <el-input
+              type="text"
+              v-model="scopeStuNum"
+              autocomplete="off"
+            ></el-input>
+          </el-form-item>
+        </el-form>
+        <div slot="footer" class="dialog-footer">
+          <el-button @click="open2 = false">取 消</el-button>
+          <el-button type="primary" @click="updateNote">
+            确 定
+          </el-button>
+        </div>
+      </el-dialog>
       <div>目前学生数: {{ tutor.nowStuNum }}</div>
       <div>最大学生数：{{ tutor.maxStuNum }}</div>
       <div>招收学生范围：成绩排名在1-{{ tutor.scopeStuNum }}之间</div>
@@ -69,6 +95,7 @@
 <script>
 import { mapState } from "vuex";
 import { UPDATE_PWD } from "@/store/types.js";
+import { UPDATE_NOTE } from "@/store/types.js";
 export default {
   created() {
     if (sessionStorage.getItem("role") == "6983f953b49c88210cb9")
@@ -77,26 +104,46 @@ export default {
   data() {
     return {
       open1: false,
+      open2: false,
       formLabelWidth: "120px",
-      number: null,
       password0: null,
-      password1: null
+      password1: null,
+      maxStuNum: null,
+      scopeStuNum: null
     };
   },
   methods: {
+    success() {
+      this.$message({
+        message: "修改成功",
+        type: "success"
+      });
+    },
     updatePwd() {
       if (this.password0 == this.password1) {
         this.$store.dispatch(UPDATE_PWD, {
           password: this.password0
         });
         this.open1 = false;
+        this.success();
       } else {
-        console.log("两次密码不一致");
+        alert("两次密码不一致");
       }
+    },
+    updateNote() {
+      this.$store.dispatch(UPDATE_NOTE, {
+        maxStuNum: this.maxStuNum,
+        scopeStuNum: this.scopeStuNum
+      });
+      this.open2 = false;
+      this.success();
+      // console.log(this.isUpdateNote);
     }
   },
   computed: {
-    ...mapState(["tutor"])
+    ...mapState(["tutor"]),
+    ...mapState(["isUpdatePwd"]),
+    ...mapState(["isUpdateNote"])
   }
 };
 </script>
