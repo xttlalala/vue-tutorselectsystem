@@ -4,3 +4,7 @@ export const GET_EXCEPTION = "getException";
 export const UPDATE_PWD = "updatePwd";
 export const UPDATE_NOTE = "updateNote";
 export const UPDATE_DIRECTIONS = "updateDirections";
+export const DELETE_COURSE = "deleteCourse";
+export const ADD_COURSE = "addCourse";
+export const UPDATE_COURSE = "updateCourse";
+export const BUILD_STUDENT = "buildStudent";

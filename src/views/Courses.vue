@@ -7,9 +7,13 @@
           <el-card class="box-card">
             <div slot="header" class="clearfix">
               <span>我的课程</span>
-              <!-- <el-button style="float: right; padding: 3px 0" type="text">
-                编辑信息
-              </el-button> -->
+              <el-button
+                style="float: right; padding: 3px 0"
+                type="text"
+                @click="open2 = true"
+              >
+                添加课程
+              </el-button>
             </div>
 
             <div>
@@ -48,6 +52,56 @@
                 </el-table-column>
               </el-table>
             </div>
+
+            <el-dialog title="添加课程" :visible.sync="open2">
+              <el-form>
+                <el-form-item label="课程名称" :label-width="formLabelWidth">
+                  <el-input
+                    type="text"
+                    v-model="name"
+                    autocomplete="off"
+                  ></el-input>
+                </el-form-item>
+                <el-form-item label="课程比重" :label-width="formLabelWidth">
+                  <el-input
+                    type="text"
+                    v-model="weight"
+                    autocomplete="off"
+                  ></el-input>
+                </el-form-item>
+              </el-form>
+              <div slot="footer" class="dialog-footer">
+                <el-button @click="open2 = false">取 消</el-button>
+                <el-button type="primary" @click="addCourse">
+                  确 定
+                </el-button>
+              </div>
+            </el-dialog>
+
+            <el-dialog title="修改课程信息" :visible.sync="open1">
+              <el-form>
+                <el-form-item label="课程名称" :label-width="formLabelWidth">
+                  <el-input
+                    type="text"
+                    v-model="name0"
+                    autocomplete="off"
+                  ></el-input>
+                </el-form-item>
+                <el-form-item label="课程比重" :label-width="formLabelWidth">
+                  <el-input
+                    type="text"
+                    v-model="weight0"
+                    autocomplete="off"
+                  ></el-input>
+                </el-form-item>
+              </el-form>
+              <div slot="footer" class="dialog-footer">
+                <el-button @click="open1 = false">取 消</el-button>
+                <el-button type="primary" @click="updateCourse">
+                  确 定
+                </el-button>
+              </div>
+            </el-dialog>
           </el-card>
         </div>
       </el-col>
@@ -58,21 +112,79 @@
 
 <script>
 import { mapState } from "vuex";
+import { DELETE_COURSE } from "@/store/types.js";
+import { ADD_COURSE } from "@/store/types.js";
+import { UPDATE_COURSE } from "@/store/types.js";
 export default {
   created() {
     this.$store.dispatch("coursesindex");
     console.log(this.tcourses);
   },
+  data: () => ({
+    open1: false,
+    open2: false,
+    formLabelWidth: "120px",
+    name: null,
+    weight: null,
+    name0: null,
+    weight0: null,
+    updateItemRow: null
+  }),
   computed: {
     ...mapState(["tcourses"])
   },
   methods: {
     handleEdit(index, row) {
+      this.updateItemRow = row;
       console.log(index + 1, row);
+      this.open1 = true;
     },
     handleDelete(index, row) {
+      this.$confirm("此操作将永久删除该课程及选该课的学生, 是否继续?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      })
+        .then(() => {
+          this.$store.dispatch(DELETE_COURSE, {
+            id: row.id
+          });
+          this.$message({
+            type: "success",
+            message: "删除成功!"
+          });
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "已取消删除"
+          });
+        });
       console.log(index + 1);
       console.log(row);
+    },
+    success() {
+      this.$message({
+        message: "操作成功",
+        type: "success"
+      });
+    },
+    addCourse() {
+      this.$store.dispatch(ADD_COURSE, {
+        name: this.name,
+        weight: this.weight
+      });
+      this.open2 = false;
+      this.success();
+    },
+    updateCourse() {
+      this.$store.dispatch(UPDATE_COURSE, {
+        id: this.updateItemRow.id,
+        name: this.name0,
+        weight: this.weight0
+      });
+      this.open1 = false;
+      this.success();
     }
   }
 };

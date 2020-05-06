@@ -13,6 +13,10 @@ const myState = {
   isUpdatePwd: false,
   isUpdateNote: false,
   isUpdateDirections: false,
+  isDeleteCourse: false,
+  isAddCourse: false,
+  isUpdateCourse: false,
+  isBuildStudent: false,
   tutor: null,
   directions: null,
   tcourses: null
@@ -33,6 +37,18 @@ const myMutations = {
   },
   [types.UPDATE_DIRECTIONS](state, data) {
     state.isUpdateDirections = data;
+  },
+  [types.DELETE_COURSE](state, data) {
+    state.isDeleteCourse = data;
+  },
+  [types.ADD_COURSE](state, data) {
+    state.isAddCourse = data;
+  },
+  [types.UPDATE_COURSE](state, data) {
+    state.isUpdateCourse = data;
+  },
+  [types.BUILD_STUDENT](state, data) {
+    state.isBuildStudent = data;
   },
   tutor(state, data) {
     state.tutor = data;
@@ -84,6 +100,22 @@ const myActions = {
   async [types.UPDATE_DIRECTIONS]({ commit }, data) {
     let resp = await axios.post("tutor/updateDirections", data);
     commit(types.UPDATE_DIRECTIONS, true);
+  },
+  async [types.DELETE_COURSE]({ commit }, data) {
+    let resp = await axios.post("tutor/deleteCourse", data);
+    commit(types.DELETE_COURSE, true);
+  },
+  async [types.ADD_COURSE]({ commit }, data) {
+    let resp = await axios.post("tutor/addcourse", data);
+    commit(types.ADD_COURSE, true);
+  },
+  async [types.UPDATE_COURSE]({ commit }, data) {
+    let resp = await axios.patch("tutor/updateCourse", data);
+    commit(types.UPDATE_COURSE, true);
+  },
+  async [types.BUILD_STUDENT]({ commit }, data) {
+    let resp = await axios.post("tutor/buildStudent", data);
+    commit(types.BUILD_STUDENT, true);
   }
 };
 export default new Vuex.Store({

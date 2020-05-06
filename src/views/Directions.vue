@@ -7,9 +7,9 @@
           <el-card class="box-card">
             <div slot="header" class="clearfix">
               <span>研究方向</span>
-              <el-button style="float: right; padding: 3px 0" type="text">
+              <!-- <el-button style="float: right; padding: 3px 0" type="text">
                 编辑信息
-              </el-button>
+              </el-button> -->
             </div>
             <div>
               <el-form ref="form" label-width="100px" class="demo-dynamic">
@@ -29,7 +29,7 @@
                     提交
                   </el-button>
                   <el-button @click="addDirection">
-                    新增课程
+                    新增方向
                   </el-button>
                 </el-form-item>
               </el-form>
