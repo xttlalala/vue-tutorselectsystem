@@ -125,9 +125,7 @@ export default {
         this.buildStudents.push(sc);
       }
       console.log(this.buildStudents);
-      this.$store.dispatch(BUILD_STUDENT, {
-        buildStudents: this.buildStudents
-      });
+      this.$store.dispatch(BUILD_STUDENT, this.buildStudents);
     }
   }
 };
