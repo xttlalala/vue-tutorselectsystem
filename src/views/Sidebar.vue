@@ -22,17 +22,21 @@
         <i class="el-icon-menu"></i>
         <span slot="title">我的信息</span>
       </el-menu-item>
-      <el-menu-item index="2" route="/students">
+      <el-menu-item index="2" route="/students" v-if="tutor">
         <i class="el-icon-menu"></i>
         <span slot="title">学生管理</span>
       </el-menu-item>
-      <el-menu-item index="3" route="/courses">
+      <el-menu-item index="3" route="/courses" v-if="tutor">
         <i class="el-icon-menu"></i>
         <span slot="title">课程管理</span>
       </el-menu-item>
-      <el-menu-item index="4" route="/directions">
+      <el-menu-item index="4" route="/directions" v-if="tutor">
         <i class="el-icon-menu"></i>
         <span slot="title">方向管理</span>
+      </el-menu-item>
+      <el-menu-item index="5" route="/choice" v-if="student">
+        <i class="el-icon-menu"></i>
+        <span slot="title">选择导师</span>
       </el-menu-item>
     </el-menu>
     <!-- </el-col>
@@ -52,7 +56,21 @@ h2 {
 </style>
 
 <script>
+import { mapState } from "vuex";
 export default {
+  created() {
+    if (sessionStorage.getItem("role") == "6983f953b49c88210cb9") {
+      // console.log(sessionStorage.getItem("role"));
+      this.$store.dispatch("backendindex");
+    }
+    if (sessionStorage.getItem("role") == "bb63e5f7e0f2ffae845c") {
+      this.$store.dispatch("studentindex");
+    }
+  },
+  computed: {
+    ...mapState(["tutor"]),
+    ...mapState(["student"])
+  },
   methods: {
     handleOpen(key, keyPath) {
       console.log(key, keyPath);

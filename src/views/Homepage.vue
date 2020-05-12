@@ -1,75 +1,91 @@
 <template>
   <div class="container">
-    <div class="basic-note" v-if="tutor">
-      <el-row>
-        <el-col :span="4">
-          <div class="grid-content bg-purple"><h3>基本信息</h3></div>
-        </el-col>
-        <el-col :span="16">
-          <div class="grid-content bg-purple-light"></div>
-        </el-col>
-        <el-col :span="4">
-          <div class="grid-content bg-purple">
-            <el-button @click="open1 = true" type="primary" plain>
-              修改密码
-            </el-button>
-          </div>
-        </el-col>
-      </el-row>
-      <el-dialog title="修改密码" :visible.sync="open1">
-        <el-form>
-          <el-form-item label="输入新密码" :label-width="formLabelWidth">
-            <el-input
-              type="password"
-              v-model="password0"
-              autocomplete="off"
-            ></el-input>
-          </el-form-item>
-          <el-form-item label="确认新密码" :label-width="formLabelWidth">
-            <el-input
-              type="password"
-              v-model="password1"
-              autocomplete="off"
-            ></el-input>
-          </el-form-item>
-        </el-form>
-        <div slot="footer" class="dialog-footer">
-          <el-button @click="open1 = false">取 消</el-button>
-          <el-button type="primary" @click="updatePwd">
-            确 定
-          </el-button>
+    <el-row>
+      <el-col :span="2"><div class="grid-content bg-purple"></div></el-col>
+      <el-col :span="20">
+        <div class="grid-content bg-purple-light">
+          <el-card class="box-card">
+            <div slot="header" class="clearfix">
+              <span>基本信息</span>
+              <el-button
+                @click="open1 = true"
+                style="float: right; padding: 3px 0"
+                type="text"
+                plain
+              >
+                修改密码
+              </el-button>
+            </div>
+            <div class="item" v-if="tutor">姓名: {{ tutor.user.name }}</div>
+            <div class="item" v-else>姓名: {{ student.user.name }}</div>
+            <div class="item" v-if="tutor">工号：{{ tutor.user.number }}</div>
+            <div class="item" v-else>学号：{{ student.user.number }}</div>
+            <div class="item" v-if="student">我的导师：{{ stutor }}</div>
+            <el-dialog title="修改密码" :visible.sync="open1">
+              <el-form>
+                <el-form-item label="输入新密码" :label-width="formLabelWidth">
+                  <el-input
+                    type="password"
+                    v-model="password0"
+                    autocomplete="off"
+                  ></el-input>
+                </el-form-item>
+                <el-form-item label="确认新密码" :label-width="formLabelWidth">
+                  <el-input
+                    type="password"
+                    v-model="password1"
+                    autocomplete="off"
+                  ></el-input>
+                </el-form-item>
+              </el-form>
+              <div slot="footer" class="dialog-footer">
+                <el-button @click="open1 = false">取 消</el-button>
+                <el-button type="primary" @click="updatePwd">
+                  确 定
+                </el-button>
+              </div>
+            </el-dialog>
+          </el-card>
         </div>
-      </el-dialog>
-      <div>姓名: {{ tutor.user.name }}</div>
-      <div>工号：{{ tutor.user.number }}</div>
-    </div>
-    <div class="basic-note" v-else>我的学生</div>
-    <div class="add-note" v-if="tutor">
-      <el-row>
-        <el-col :span="4">
-          <div class="grid-content bg-purple"><h3>招收信息</h3></div>
-        </el-col>
-        <el-col :span="16">
-          <div class="grid-content bg-purple-light"></div>
-        </el-col>
-        <el-col :span="4">
-          <div class="grid-content bg-purple">
-            <el-button @click="open2 = true" type="primary" plain>
-              编辑信息
-            </el-button>
-          </div>
-        </el-col>
-      </el-row>
-      <el-dialog title="编辑信息" :visible.sync="open2">
+      </el-col>
+      <el-col :span="2"><div class="grid-content bg-purple"></div></el-col>
+    </el-row>
+    <el-row v-if="tutor">
+      <el-col :span="2"><div class="grid-content bg-purple"></div></el-col>
+      <el-col :span="20">
+        <div class="grid-content bg-purple-light">
+          <el-card class="box-card">
+            <div slot="header" class="clearfix">
+              <span>招收信息</span>
+              <el-button
+                @click="open2 = true"
+                style="float: right; padding: 3px 0"
+                type="text"
+                plain
+              >
+                编辑信息
+              </el-button>
+            </div>
+
+            <div class="item">目前学生数: {{ sNumber }}</div>
+            <div class="item">最大学生数：{{ tutor.maxStuNum }}</div>
+            <div class="item">
+              招收学生范围：成绩排名在1-{{ tutor.scopeStuNum }}之间
+            </div>
+          </el-card>
+        </div>
+      </el-col>
+      <el-col :span="2"><div class="grid-content bg-purple"></div></el-col>
+      <el-dialog title="编辑招收学生信息" :visible.sync="open2">
         <el-form>
-          <el-form-item label="招收最大学生数" :label-width="formLabelWidth">
+          <el-form-item label="最大学生数" :label-width="formLabelWidth">
             <el-input
               type="text"
               v-model="maxStuNum"
               autocomplete="off"
             ></el-input>
           </el-form-item>
-          <el-form-item label="招收学生最末排名" :label-width="formLabelWidth">
+          <el-form-item label="学生最末排名" :label-width="formLabelWidth">
             <el-input
               type="text"
               v-model="scopeStuNum"
@@ -84,11 +100,7 @@
           </el-button>
         </div>
       </el-dialog>
-      <div>目前学生数: {{ tutor.nowStuNum }}</div>
-      <div>最大学生数：{{ tutor.maxStuNum }}</div>
-      <div>招收学生范围：成绩排名在1-{{ tutor.scopeStuNum }}之间</div>
-    </div>
-    <div class="add-note" v-else>我的学生</div>
+    </el-row>
   </div>
 </template>
 
@@ -98,8 +110,13 @@ import { UPDATE_PWD } from "@/store/types.js";
 import { UPDATE_NOTE } from "@/store/types.js";
 export default {
   created() {
-    if (sessionStorage.getItem("role") == "6983f953b49c88210cb9")
-      this.$store.dispatch("backendindex");
+    if (sessionStorage.getItem("role") == "6983f953b49c88210cb9") {
+      this.$store.dispatch("backendindex"),
+        this.$store.dispatch("mystudentsindex");
+    }
+    if (sessionStorage.getItem("role") == "bb63e5f7e0f2ffae845c") {
+      this.$store.dispatch("studentindex");
+    }
   },
   data() {
     return {
@@ -111,6 +128,19 @@ export default {
       maxStuNum: null,
       scopeStuNum: null
     };
+  },
+  computed: {
+    ...mapState(["tutor"]),
+    ...mapState(["mystudents"]),
+    ...mapState(["student"]),
+    ...mapState(["stutor"]),
+    ...mapState(["isUpdatePwd"]),
+    ...mapState(["isUpdateNote"]),
+    sNumber() {
+      if (this.mystudents.length == null) {
+        return 0;
+      } else return this.mystudents.length;
+    }
   },
   methods: {
     success() {
@@ -139,35 +169,35 @@ export default {
       this.success();
       // console.log(this.isUpdateNote);
     }
-  },
-  computed: {
-    ...mapState(["tutor"]),
-    ...mapState(["isUpdatePwd"]),
-    ...mapState(["isUpdateNote"])
   }
 };
 </script>
 
 <style scoped>
-h3 {
-  padding: 3px 0px;
-  font-size: 20px;
+.container {
+  width: 100%;
+  padding-top: 50px;
 }
-.basic-note {
-  margin: 50px;
-  padding: 50px;
-  background-color: white;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.12), 0 0 6px rgba(0, 0, 0, 0.04);
-  border-radius: 20px;
+/* 卡片 */
+.text {
+  font-size: 14px;
 }
-.basic-note div {
-  padding-bottom: 1px;
-  font-size: 16px;
+.clearfix:before,
+.clearfix:after {
+  display: table;
+  content: "";
 }
-.basic-note > div {
-  padding-bottom: 8px;
-  font-size: 16px;
+.clearfix:after {
+  clear: both;
 }
+
+.box-card {
+  width: 100%;
+}
+.item {
+  margin-bottom: 15px;
+}
+/* 卡片 */
 
 .add-note {
   margin: 50px;
@@ -184,4 +214,20 @@ h3 {
   padding-bottom: 8px;
   font-size: 16px;
 }
+/* 布局css */
+.el-row {
+  margin-bottom: 20px;
+}
+.el-col {
+  border-radius: 4px;
+}
+.grid-content {
+  border-radius: 4px;
+  min-height: 36px;
+}
+.row-bg {
+  padding: 10px 0;
+  background-color: #f9fafc;
+}
+/* 布局css */
 </style>

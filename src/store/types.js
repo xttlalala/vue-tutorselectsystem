@@ -8,3 +8,6 @@ export const DELETE_COURSE = "deleteCourse";
 export const ADD_COURSE = "addCourse";
 export const UPDATE_COURSE = "updateCourse";
 export const BUILD_STUDENT = "buildStudent";
+export const ADD_STUDENT = "addstudent";
+export const CHOOSE_TUTOR = "chooseTutor";
+export const ADD_SDIRECTION = "addSDirection";

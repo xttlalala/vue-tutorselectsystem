@@ -2,6 +2,7 @@
   <div>
     <div class="title">
       <p v-if="tutor">欢迎您！{{ tutor.user.name }}老师</p>
+      <p v-else>欢迎您！{{ student.user.name }}同学</p>
     </div>
   </div>
 </template>
@@ -10,12 +11,18 @@
 import { mapState } from "vuex";
 export default {
   created() {
-    if (sessionStorage.getItem("role") == "6983f953b49c88210cb9")
+    if (sessionStorage.getItem("role") == "6983f953b49c88210cb9") {
       // console.log(sessionStorage.getItem("role"));
       this.$store.dispatch("backendindex");
+    }
+    if (sessionStorage.getItem("role") == "bb63e5f7e0f2ffae845c") {
+      console.log(sessionStorage.getItem("role"));
+      this.$store.dispatch("studentindex");
+    }
   },
   computed: {
-    ...mapState(["tutor"])
+    ...mapState(["tutor"]),
+    ...mapState(["student"])
   }
 };
 </script>

@@ -107,6 +107,121 @@
       </el-col>
       <el-col :span="2"><div class="grid-content bg-purple"></div></el-col>
     </el-row>
+
+    <el-row>
+      <el-col :span="2"><div class="grid-content bg-purple"></div></el-col>
+      <el-col :span="20">
+        <div class="grid-content bg-purple-light">
+          <el-card class="box-card">
+            <div slot="header" class="clearfix">
+              <span>录入学生</span>
+              <!-- <el-button
+                style="float: right; padding: 3px 0"
+                type="text"
+                @click="open2 = true"
+              >
+                添加课程
+              </el-button> -->
+            </div>
+
+            <div>
+              <el-select
+                v-model="value"
+                filterable
+                placeholder="请选择所在课程"
+                style="margin:0px 30px;"
+              >
+                <el-option
+                  v-for="item in tcourses"
+                  :key="item.id"
+                  :label="item.name"
+                  :value="item.id"
+                ></el-option>
+              </el-select>
+              <form>
+                <input
+                  type="file"
+                  @change="readFile"
+                  style="margin: 30px 0px 0px 30px;"
+                />
+              </form>
+              <br />
+              <el-table :data="students" style="width: 100%">
+                <el-table-column
+                  type="index"
+                  label="序号"
+                  width="100"
+                ></el-table-column>
+                <el-table-column
+                  prop="number"
+                  label="学号"
+                  width="180"
+                ></el-table-column>
+                <el-table-column
+                  prop="name"
+                  label="姓名"
+                  width="180"
+                ></el-table-column>
+                <el-table-column
+                  prop="score"
+                  label="成绩"
+                  width="180"
+                ></el-table-column>
+              </el-table>
+              <el-button
+                type="primary"
+                style="float: right; margin:10px;"
+                @click="buildStudent"
+              >
+                录入学生
+              </el-button>
+            </div>
+          </el-card>
+        </div>
+      </el-col>
+      <el-col :span="2"><div class="grid-content bg-purple"></div></el-col>
+    </el-row>
+
+    <el-row>
+      <el-col :span="2"><div class="grid-content bg-purple"></div></el-col>
+      <el-col :span="20">
+        <div class="grid-content bg-purple-light">
+          <el-card class="box-card">
+            <div slot="header" class="clearfix">
+              <span>综合成绩排名</span>
+              <!-- <el-button
+                type="text"
+                style="float: right; margin:3px 0px;"
+                @click="excuteStudent"
+              >
+                生成排名
+              </el-button> -->
+            </div>
+
+            <div>
+              <el-table :data="studentUsers" style="width: 100%">
+                <el-table-column
+                  type="index"
+                  label="序号"
+                  width="100"
+                ></el-table-column>
+                <el-table-column
+                  prop="name"
+                  label="姓名"
+                  width="180"
+                ></el-table-column>
+                <el-table-column
+                  prop="number"
+                  label="学号"
+                  width="180"
+                ></el-table-column>
+              </el-table>
+            </div>
+          </el-card>
+        </div>
+      </el-col>
+      <el-col :span="2"><div class="grid-content bg-purple"></div></el-col>
+    </el-row>
   </div>
 </template>
 
@@ -115,9 +230,12 @@ import { mapState } from "vuex";
 import { DELETE_COURSE } from "@/store/types.js";
 import { ADD_COURSE } from "@/store/types.js";
 import { UPDATE_COURSE } from "@/store/types.js";
+import { readStudentsFile } from "@/utils/ExcelUtils.js";
+import { BUILD_STUDENT } from "@/store/types.js";
 export default {
   created() {
     this.$store.dispatch("coursesindex");
+    this.$store.dispatch("excuteStudent");
     console.log(this.tcourses);
   },
   data: () => ({
@@ -128,12 +246,30 @@ export default {
     weight: null,
     name0: null,
     weight0: null,
-    updateItemRow: null
+    updateItemRow: null,
+    //建立学生
+    students: null,
+    student: { user: { number: null } },
+    course: { id: null },
+    buildStudents: [
+      {
+        score: null,
+        student: { user: { number: null, name: null } },
+        course: { id: null }
+      }
+    ],
+    value: "", //前端传来的课程id
+    cid: null
   }),
   computed: {
-    ...mapState(["tcourses"])
+    ...mapState(["tcourses"]),
+    ...mapState(["isBuildStudents"]),
+    ...mapState(["studentUsers"])
   },
   methods: {
+    excuteStudent() {
+      this.$store.dispatch("excuteStudent");
+    },
     handleEdit(index, row) {
       this.updateItemRow = row;
       console.log(index + 1, row);
@@ -185,6 +321,51 @@ export default {
       });
       this.open1 = false;
       this.success();
+    },
+    readFile(event) {
+      let file = event.target.files[0];
+      readStudentsFile(file).then(data => {
+        this.students = data;
+        // console.log(this.students);
+        // console.log(this.students[0].number);
+        // console.log(this.buildStudents);
+        // console.log(this.value);
+      });
+    },
+    // buildStudent() {
+    //   this.$store.dispatch(BUILD_STUDENT, {
+    //     score: this.students[0].score,
+    //     student: { user: { number: this.students[0].number } }, //students列表第一个对象的分数和学号
+    //     course: { id: this.value } //前端选的课程id
+    //   });
+    // }
+
+    buildStudent() {
+      this.fullscreenLoading = true;
+      var datas = [];
+      for (let index = 0; index < this.students.length; index++) {
+        datas.push({
+          score: this.students[index].score,
+          student: {
+            user: {
+              number: this.students[index].number,
+              name: this.students[index].name
+            }
+          },
+          course: { id: this.value }
+        });
+      }
+      // this.buildStudents = datas;
+      console.log(datas);
+      this.$store.dispatch(BUILD_STUDENT, datas).then(() => {
+        this.fullscreenLoading = false;
+        if (this.isBuildStudents == true) {
+          this.$message({
+            message: "创建成功！",
+            type: "success"
+          });
+        }
+      });
     }
   }
 };

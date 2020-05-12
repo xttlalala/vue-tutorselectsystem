@@ -51,12 +51,19 @@ export default {
     console.log(this.directions);
   },
   computed: {
-    ...mapState(["directions"])
+    ...mapState(["directions"]),
+    ...mapState(["isUpdateDirections"])
   },
   methods: {
     submitForm() {
-      this.$store.dispatch(UPDATE_DIRECTIONS, {
-        directions: JSON.stringify(this.directions)
+      console.log(this.directions);
+      this.$store.dispatch(UPDATE_DIRECTIONS, this.directions).then(() => {
+        if (this.isUpdateDirections == true) {
+          this.$message({
+            message: "修改成功！",
+            type: "success"
+          });
+        }
       });
     },
     removeDirection(item) {
@@ -66,8 +73,6 @@ export default {
       }
     },
     addDirection() {
-      console.log(this.directions);
-      console.log(JSON.stringify(this.directions));
       this.directions.push({
         name: ""
       });
