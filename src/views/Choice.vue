@@ -60,7 +60,7 @@
 
 <script>
 import { CHOOSE_TUTOR } from "@/store/types.js";
-import { ADD_SDIRECTION } from "@/store/types.js";
+import { ADD_DIRECTION } from "@/store/types.js";
 import { mapState } from "vuex";
 export default {
   created() {
@@ -90,6 +90,7 @@ export default {
 
   methods: {
     handleChoose(index, row) {
+      console.log(this.checkedDirections);
       // console.log(this.checkedDirections);
       // var datas = [];
       // for (let index = 0; index < this.checkedDirections.length; index++) {
@@ -98,10 +99,13 @@ export default {
       //   });
       // }
       // console.log(datas);
+      // this.$store.dispatch("tutorStuNum",{
+      //   id:row.id
+      // })
       if (this.student.tutor != null) {
-        alert("你已经有导师了，不可重复选择");
+        this.$message.error("你已经有导师了，不可重复选择");
       } else if (row.nowStuNum == row.maxStuNum) {
-        alert("导师人数已满");
+        this.$message.error("导师人数已满");
       } else {
         this.$confirm("选择导师后不可随意更改, 是否继续?", "提示", {
           confirmButtonText: "确定",
@@ -109,19 +113,22 @@ export default {
           type: "warning"
         })
           .then(() => {
-            this.$store.dispatch(ADD_SDIRECTION, this.checkedDirections);
-            this.$store.dispatch(CHOOSE_TUTOR, {
-              id: row.id
-            });
-            if (this.choose == 1) {
-              this.$message({
-                type: "success",
-                message: "选择成功!"
+            this.$store
+              .dispatch(CHOOSE_TUTOR, {
+                id: row.id
+              })
+              .then(() => {
+                if (this.choose == 1) {
+                  this.$store.dispatch(ADD_DIRECTION, this.checkedDirections);
+                  this.$message({
+                    type: "success",
+                    message: "选择成功!"
+                  });
+                }
+                if (this.choose == 0) {
+                  this.$message.error("抱歉，您的成绩排名不在导师选择的范围内");
+                }
               });
-            }
-            if (this.choose == 0) {
-              this.$message.error("抱歉，您的成绩排名不在导师选择的范围内");
-            }
           })
           .catch(() => {
             this.$message({

@@ -17,7 +17,9 @@ const myState = {
   isDeleteCourse: false,
   isAddCourse: false,
   isUpdateCourse: false,
-  addSDirection: false,
+  isUpdateSdir: false,
+  isDeleteRelation: false,
+  addDirection: false,
   studentUsers: null,
   tutor: null,
   directions: null,
@@ -64,8 +66,14 @@ const myMutations = {
   [types.CHOOSE_TUTOR](state, data) {
     state.choose = data;
   },
-  [types.ADD_SDIRECTION](state, data) {
-    state.addSDirection = data;
+  [types.ADD_DIRECTION](state, data) {
+    state.addDirection = data;
+  },
+  [types.UPDATE_SDIR](state, data) {
+    state.isUpdateSdir = data;
+  },
+  [types.DELETE_RELATION](state, data) {
+    state.isDeleteRelation = data;
   },
   tutor(state, data) {
     state.tutor = data;
@@ -174,9 +182,17 @@ const myActions = {
     let resp = await axios.post("choice", data);
     commit(types.CHOOSE_TUTOR, resp.data.choose);
   },
-  async [types.ADD_SDIRECTION]({ commit }, data) {
-    await axios.post("addSDirection", data);
-    commit(types.ADD_SDIRECTION, true);
+  async [types.ADD_DIRECTION]({ commit }, data) {
+    await axios.post("addDirection", data);
+    commit(types.ADD_DIRECTION, true);
+  },
+  async [types.UPDATE_SDIR]({ commit }, data) {
+    await axios.post("tutor/updateSdir", data);
+    commit(types.UPDATE_SDIR, true);
+  },
+  async [types.DELETE_RELATION]({ commit }, data) {
+    await axios.post("tutor/deleteRelation", data);
+    commit(types.DELETE_RELATION, true);
   }
 };
 export default new Vuex.Store({

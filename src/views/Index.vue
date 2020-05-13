@@ -22,6 +22,7 @@
 <style scoped>
 .container {
   background-color: aliceblue;
+  /* background-color: #ffffcc; */
   display: inline-block;
   width: 100%;
 }

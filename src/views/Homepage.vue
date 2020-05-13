@@ -67,7 +67,7 @@
               </el-button>
             </div>
 
-            <div class="item">目前学生数: {{ sNumber }}</div>
+            <div class="item">目前学生数: {{ tutor.nowStuNum }}</div>
             <div class="item">最大学生数：{{ tutor.maxStuNum }}</div>
             <div class="item">
               招收学生范围：成绩排名在1-{{ tutor.scopeStuNum }}之间
@@ -135,12 +135,12 @@ export default {
     ...mapState(["student"]),
     ...mapState(["stutor"]),
     ...mapState(["isUpdatePwd"]),
-    ...mapState(["isUpdateNote"]),
-    sNumber() {
-      if (this.mystudents.length == null) {
-        return 0;
-      } else return this.mystudents.length;
-    }
+    ...mapState(["isUpdateNote"])
+    // sNumber() {
+    //   if (this.mystudents.length() == null) {
+    //     return 0;
+    //   } else return this.mystudents.length();
+    // }
   },
   methods: {
     success() {
@@ -151,22 +151,28 @@ export default {
     },
     updatePwd() {
       if (this.password0 == this.password1) {
-        this.$store.dispatch(UPDATE_PWD, {
-          password: this.password0
-        });
-        this.open1 = false;
-        this.success();
+        this.$store
+          .dispatch(UPDATE_PWD, {
+            password: this.password0
+          })
+          .then(() => {
+            this.open1 = false;
+            this.success();
+          });
       } else {
         alert("两次密码不一致");
       }
     },
     updateNote() {
-      this.$store.dispatch(UPDATE_NOTE, {
-        maxStuNum: this.maxStuNum,
-        scopeStuNum: this.scopeStuNum
-      });
-      this.open2 = false;
-      this.success();
+      this.$store
+        .dispatch(UPDATE_NOTE, {
+          maxStuNum: this.maxStuNum,
+          scopeStuNum: this.scopeStuNum
+        })
+        .then(() => {
+          this.open2 = false;
+          this.success();
+        });
       // console.log(this.isUpdateNote);
     }
   }
@@ -176,7 +182,7 @@ export default {
 <style scoped>
 .container {
   width: 100%;
-  padding-top: 50px;
+  padding-top: 30px;
 }
 /* 卡片 */
 .text {

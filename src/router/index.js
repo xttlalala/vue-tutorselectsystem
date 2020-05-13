@@ -9,18 +9,6 @@ const routes = [
     component: () => import("@/views/Homepage.vue")
   },
   {
-    path: "/students",
-    component: () => import("@/views/Students.vue")
-  },
-  {
-    path: "/directions",
-    component: () => import("@/views/Directions.vue")
-  },
-  {
-    path: "/courses",
-    component: () => import("@/views/Courses.vue")
-  },
-  {
     path: "/choice",
     component: () => import("@/views/Choice.vue")
   }
@@ -40,6 +28,18 @@ let adminRoutes = [
     props: true,
     path: "/welcome",
     component: () => import("@/views/Welcome.vue")
+  },
+  {
+    path: "/students",
+    component: () => import("@/views/Students.vue")
+  },
+  {
+    path: "/directions",
+    component: () => import("@/views/Directions.vue")
+  },
+  {
+    path: "/courses",
+    component: () => import("@/views/Courses.vue")
   }
 ];
 // 必须与后端提前约定。按角色，动态加载路由信息

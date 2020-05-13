@@ -306,21 +306,27 @@ export default {
       });
     },
     addCourse() {
-      this.$store.dispatch(ADD_COURSE, {
-        name: this.name,
-        weight: this.weight
-      });
-      this.open2 = false;
-      this.success();
+      this.$store
+        .dispatch(ADD_COURSE, {
+          name: this.name,
+          weight: this.weight
+        })
+        .then(() => {
+          this.open2 = false;
+          this.success();
+        });
     },
     updateCourse() {
-      this.$store.dispatch(UPDATE_COURSE, {
-        id: this.updateItemRow.id,
-        name: this.name0,
-        weight: this.weight0
-      });
-      this.open1 = false;
-      this.success();
+      this.$store
+        .dispatch(UPDATE_COURSE, {
+          id: this.updateItemRow.id,
+          name: this.name0,
+          weight: this.weight0
+        })
+        .then(() => {
+          this.open1 = false;
+          this.success();
+        });
     },
     readFile(event) {
       let file = event.target.files[0];
@@ -341,7 +347,12 @@ export default {
     // }
 
     buildStudent() {
-      this.fullscreenLoading = true;
+      const loading = this.$loading({
+        lock: true,
+        text: "Loading",
+        spinner: "el-icon-loading",
+        background: "rgba(0, 0, 0, 0.7)"
+      });
       var datas = [];
       for (let index = 0; index < this.students.length; index++) {
         datas.push({
@@ -358,7 +369,6 @@ export default {
       // this.buildStudents = datas;
       console.log(datas);
       this.$store.dispatch(BUILD_STUDENT, datas).then(() => {
-        this.fullscreenLoading = false;
         if (this.isBuildStudents == true) {
           this.$message({
             message: "创建成功！",
@@ -366,6 +376,7 @@ export default {
           });
         }
       });
+      loading.close();
     }
   }
 };
@@ -374,7 +385,7 @@ export default {
 <style scoped>
 .container {
   width: 100%;
-  padding-top: 50px;
+  padding-top: 30px;
 }
 .el-table {
   margin: 0px 30px;

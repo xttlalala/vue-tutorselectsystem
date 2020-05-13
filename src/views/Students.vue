@@ -53,7 +53,46 @@
                 label="姓名"
                 width="180"
               ></el-table-column>
+              <el-table-column
+                prop="mydirection"
+                label="毕设方向"
+                width="280"
+              ></el-table-column>
+              <el-table-column label="操作">
+                <template slot-scope="scope">
+                  <el-button
+                    size="mini"
+                    @click="handleEdit(scope.$index, scope.row)"
+                  >
+                    编辑
+                  </el-button>
+                  <el-button
+                    size="mini"
+                    type="danger"
+                    @click="handleDelete(scope.$index, scope.row)"
+                  >
+                    删除
+                  </el-button>
+                </template>
+              </el-table-column>
             </el-table>
+            <el-dialog title="修改毕设方向" :visible.sync="open1">
+              <el-form>
+                <el-form-item label="毕设方向" :label-width="formLabelWidth">
+                  <el-input
+                    type="text"
+                    v-model="dir"
+                    autocomplete="off"
+                  ></el-input>
+                </el-form-item>
+              </el-form>
+              <div slot="footer" class="dialog-footer">
+                <el-button @click="open1 = false">取 消</el-button>
+                <el-button type="primary" @click="updateSdir">
+                  确 定
+                </el-button>
+              </div>
+            </el-dialog>
           </el-card>
         </div>
       </el-col>
@@ -65,12 +104,15 @@
 <script>
 import { mapState } from "vuex";
 import { ADD_STUDENT } from "@/store/types.js";
+import { UPDATE_SDIR } from "@/store/types.js";
+import { DELETE_RELATION } from "@/store/types.js";
 export default {
   created() {
     this.$store.dispatch("mystudentsindex");
     console.log(this.mystudents);
   },
   computed: {
+    ...mapState(["tutor"]),
     ...mapState(["gotStudent"]),
     ...mapState(["mystudents"])
   },
@@ -78,25 +120,82 @@ export default {
     //表单
     labelPosition: "right",
     name: "",
-    number: ""
+    number: "",
+    open1: false,
+    formLabelWidth: "120px",
+    updateItemRow: null,
+    dir: null
   }),
   methods: {
     addstudent() {
       console.log(this.name);
       console.log(this.number);
+      if (this.mystudents.length == this.tutor.maxStuNum) {
+        this.$message.error("您已完成招生目标，不能继续添加。");
+      } else {
+        this.$store
+          .dispatch(ADD_STUDENT, {
+            user: {
+              name: this.name,
+              number: this.number
+            }
+          })
+          .then(() => {
+            console.log(this.gotStudent);
+            this.$message({
+              message: "恭喜你，成功添加学生 " + this.gotStudent.user.name,
+              type: "success"
+            });
+          })
+          .catch(() => {
+            this.$message.error("该学生已有导师，不可重复添加");
+          });
+      }
+    },
+    success() {
+      this.$message({
+        message: "操作成功",
+        type: "success"
+      });
+    },
+    handleEdit(index, row) {
+      this.updateItemRow = row;
+      console.log(index + 1, row);
+      this.open1 = true;
+    },
+    handleDelete(index, row) {
+      this.$confirm("此操作将永久取消您与该学生的关联, 是否继续?", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      })
+        .then(() => {
+          this.$store.dispatch(DELETE_RELATION, {
+            id: row.id
+          });
+          this.$message({
+            type: "success",
+            message: "删除成功!"
+          });
+        })
+        .catch(() => {
+          this.$message({
+            type: "info",
+            message: "已取消删除"
+          });
+        });
+      console.log(index + 1);
+      console.log(row);
+    },
+    updateSdir() {
       this.$store
-        .dispatch(ADD_STUDENT, {
-          user: {
-            name: this.name,
-            number: this.number
-          }
+        .dispatch(UPDATE_SDIR, {
+          id: this.updateItemRow.id,
+          mydirection: this.dir
         })
         .then(() => {
-          console.log(this.gotStudent);
-          this.$message({
-            message: "恭喜你，这是一条成功消息" + this.gotStudent.user.name,
-            type: "success"
-          });
+          this.open1 = false;
+          this.success();
         });
     }
   }
@@ -106,7 +205,7 @@ export default {
 <style scoped>
 .container {
   width: 100%;
-  padding-top: 50px;
+  padding-top: 30px;
 }
 .el-table {
   margin: 0px 30px;

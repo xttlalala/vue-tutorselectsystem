@@ -1,37 +1,38 @@
 <template>
-  <div style="width:100%">
+  <div style="width:100%" class="container">
     <!-- <ul>
       <li><router-link to="/homepage">首页</router-link></li>
     </ul> -->
 
     <!-- <el-row class="tac">
       <el-col :span="24"> -->
-    <h2>导航栏</h2>
+
     <el-menu
       default-active="1"
       class="el-menu-vertical-demo"
       @open="handleOpen"
       @close="handleClose"
-      background-color="#545c64"
-      text-color="#fff"
-      active-text-color="#ffd04b"
+      background-color="#ccccff"
+      text-color="#339999"
+      active-text-color="#6666cc"
       router
     >
+      <h2>导航栏</h2>
       <!-- default-active 当前激活菜单的 index -->
       <el-menu-item index="1" route="/homepage">
-        <i class="el-icon-menu"></i>
+        <i class="el-icon-s-home"></i>
         <span slot="title">我的信息</span>
       </el-menu-item>
       <el-menu-item index="2" route="/students" v-if="tutor">
-        <i class="el-icon-menu"></i>
+        <i class="el-icon-user-solid"></i>
         <span slot="title">学生管理</span>
       </el-menu-item>
       <el-menu-item index="3" route="/courses" v-if="tutor">
-        <i class="el-icon-menu"></i>
+        <i class="el-icon-s-claim"></i>
         <span slot="title">课程管理</span>
       </el-menu-item>
       <el-menu-item index="4" route="/directions" v-if="tutor">
-        <i class="el-icon-menu"></i>
+        <i class="el-icon-s-flag"></i>
         <span slot="title">方向管理</span>
       </el-menu-item>
       <el-menu-item index="5" route="/choice" v-if="student">
@@ -45,13 +46,19 @@
 </template>
 
 <style scoped>
+.container {
+  padding: 0px 0px 20px 20px;
+  height: 1000px;
+}
 h2 {
-  color: cadetblue;
-  background-color: #545c64;
+  color: #339999;
+  background-color: "#ccccff";
   padding: 25px;
 }
 .el-menu {
-  height: 800px;
+  height: 400px;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.12), 0 0 6px rgba(0, 0, 0, 0.04);
 }
 </style>
 

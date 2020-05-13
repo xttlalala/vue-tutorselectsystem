@@ -35,10 +35,10 @@ axios.interceptors.response.use(
       switch (resp.status) {
         case 401:
           //可基于响应码，声明单独的处理
+          store.commit(GET_EXCEPTION, { message: resp.data.message });
           break;
       }
       //使用同步事件，统一将任意异常信息，置于sotre
-      store.commit(GET_EXCEPTION, { message: resp.data.message });
     }
     //之前认为我们已经做了错误处理 放行但不返回响应对象 所以store.index的resp一定要判断是否为空
     //为防止每次返回结果都要判断，我们用了下面的方法。

@@ -19,7 +19,7 @@
             <label>密码</label>
             <el-input type="password" v-model="password"></el-input>
             <br />
-            <el-button @click="login" type="primary">登录</el-button>
+            <el-button @click="login">登录</el-button>
           </form>
         </div>
       </el-col>
@@ -38,7 +38,8 @@
 <style scoped>
 .container {
   height: 100%;
-  background-image: url("../image/login.png");
+  background-image: url("../image/login2.jpg");
+  background-size: cover;
 }
 .el-col {
   padding-top: 150px;
@@ -56,21 +57,22 @@
   /* text-align: center; */
 }
 h1 {
-  color: aliceblue;
+  color: white;
 }
 .el-input {
   margin-bottom: 20px;
 }
 .el-button {
-  margin: 10px 0px;
+  margin: 35px 0px;
   float: right;
+  background-color: #ccccff;
 }
 .add-div {
   background-color: darkgrey;
   /* background-color: gray; */
   border-radius: 10px;
-  height: 240px;
-  opacity: 0.9;
+  height: 260px;
+  opacity: 0.7;
 }
 </style>
 
@@ -83,11 +85,14 @@ export default {
   }),
   methods: {
     login() {
-      this.$store.dispatch(LOGIN, {
-        number: this.number,
-        password: this.password
-      });
-      this.$refs.form.reset();
+      this.$store
+        .dispatch(LOGIN, {
+          number: this.number,
+          password: this.password
+        })
+        .then(() => {
+          this.$router.push("/homepage");
+        });
     }
   }
 };

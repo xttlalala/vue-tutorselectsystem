@@ -84,7 +84,7 @@ export default {
 <style scoped>
 .container {
   width: 100%;
-  padding-top: 50px;
+  padding-top: 30px;
 }
 /* 卡片 */
 .text {
