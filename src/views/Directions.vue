@@ -20,12 +20,24 @@
                   :prop="'directions.' + index + '.name'"
                 >
                   <el-input v-model="direction.name"></el-input>
-                  <el-button @click.prevent="removeDirection(direction)">
+                  <el-button
+                    type="danger"
+                    size="mini"
+                    circle
+                    icon="el-icon-delete"
+                    @click.prevent="removeDirection(direction)"
+                    style="margin-left:10px"
+                  ></el-button>
+                  <!-- <el-button @click.prevent="removeDirection(direction)">
                     删除
-                  </el-button>
+                  </el-button> -->
                 </el-form-item>
                 <el-form-item>
-                  <el-button type="primary" @click="submitForm">
+                  <el-button
+                    type="primary"
+                    @click="submitForm"
+                    style="background-color: #ccccff; border-color: #ccccff;width:90px"
+                  >
                     提交
                   </el-button>
                   <el-button @click="addDirection">

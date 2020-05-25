@@ -3,6 +3,24 @@
     <el-row>
       <el-col :span="2"><div class="grid-content bg-purple"></div></el-col>
       <el-col :span="20">
+        <div class="grid-content bg-purple-light button-container">
+          <el-button
+            @click="changeItem2"
+            icon="el-icon-s-goods
+"
+          >
+            我的学生
+          </el-button>
+          <el-button @click="changeItem1" icon="el-icon-user-solid">
+            自选学生
+          </el-button>
+        </div>
+      </el-col>
+      <el-col :span="2"><div class="grid-content bg-purple"></div></el-col>
+    </el-row>
+    <el-row :hidden="flag != 1">
+      <el-col :span="2"><div class="grid-content bg-purple"></div></el-col>
+      <el-col :span="20">
         <div class="grid-content bg-purple-light">
           <el-card class="box-card">
             <div slot="header" class="clearfix">
@@ -18,9 +36,8 @@
             </el-form>
             <el-button
               type="primary"
-              plain
               @click="addstudent"
-              style="float:right;margin:0px 10px 20px 0px;"
+              style="float:right;margin:0px 10px 20px 0px;background-color: #ccccff; border-color: #ccccff"
             >
               添加学生
             </el-button>
@@ -29,7 +46,7 @@
       </el-col>
       <el-col :span="2"><div class="grid-content bg-purple"></div></el-col>
     </el-row>
-    <el-row>
+    <el-row :hidden="flag != 2">
       <el-col :span="2"><div class="grid-content bg-purple"></div></el-col>
       <el-col :span="20">
         <div class="grid-content bg-purple-light">
@@ -61,18 +78,30 @@
               <el-table-column label="操作">
                 <template slot-scope="scope">
                   <el-button
+                    icon="el-icon-edit"
+                    circle
+                    @click="handleEdit(scope.$index, scope.row)"
+                    style="background-color: #ccccff;"
+                  ></el-button>
+                  <!-- <el-button
                     size="mini"
                     @click="handleEdit(scope.$index, scope.row)"
                   >
-                    编辑
-                  </el-button>
+                    <i class="el-icon-edit"></i>
+                  </el-button> -->
                   <el-button
+                    type="danger"
+                    icon="el-icon-delete"
+                    circle
+                    @click="handleDelete(scope.$index, scope.row)"
+                  ></el-button>
+                  <!-- <el-button
                     size="mini"
                     type="danger"
                     @click="handleDelete(scope.$index, scope.row)"
                   >
-                    删除
-                  </el-button>
+                    <i class="el-icon-delete"></i>
+                  </el-button> -->
                 </template>
               </el-table-column>
             </el-table>
@@ -113,7 +142,6 @@ export default {
   },
   computed: {
     ...mapState(["tutor"]),
-    ...mapState(["gotStudent"]),
     ...mapState(["mystudents"])
   },
   data: () => ({
@@ -124,9 +152,16 @@ export default {
     open1: false,
     formLabelWidth: "120px",
     updateItemRow: null,
-    dir: null
+    dir: null,
+    flag: 2
   }),
   methods: {
+    changeItem1() {
+      this.flag = 1;
+    },
+    changeItem2() {
+      this.flag = 2;
+    },
     addstudent() {
       console.log(this.name);
       console.log(this.number);
@@ -141,9 +176,8 @@ export default {
             }
           })
           .then(() => {
-            console.log(this.gotStudent);
             this.$message({
-              message: "恭喜你，成功添加学生 " + this.gotStudent.user.name,
+              message: "恭喜你，成功添加该学生 ",
               type: "success"
             });
           })
@@ -161,6 +195,7 @@ export default {
     handleEdit(index, row) {
       this.updateItemRow = row;
       console.log(index + 1, row);
+      this.dir = row.mydirection;
       this.open1 = true;
     },
     handleDelete(index, row) {
@@ -227,7 +262,15 @@ export default {
   width: 100%;
 }
 /* 卡片 */
-
+.button-container > .el-button {
+  font-size: 15px;
+  background-color: #ccccff;
+  color: #5fa1a1;
+  width: 150px;
+  height: 70px;
+  border-radius: 40px;
+  margin-right: 10px;
+}
 /* 选课列表 */
 .el-input {
   width: 80%;

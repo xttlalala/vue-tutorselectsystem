@@ -7,8 +7,16 @@
           <el-card class="box-card">
             <div slot="header" class="clearfix">
               <span>基本信息</span>
+              <!-- <el-button
+                icon="el-icon-edit"
+                size="mini"
+                circle
+                @click="open1 = true"
+                style="background-color: #ccccff;float: right;"
+              ></el-button> -->
               <el-button
                 @click="open1 = true"
+                icon="el-icon-edit"
                 style="float: right; padding: 3px 0"
                 type="text"
                 plain
@@ -58,7 +66,8 @@
             <div slot="header" class="clearfix">
               <span>招收信息</span>
               <el-button
-                @click="open2 = true"
+                @click="open22"
+                icon="el-icon-edit"
                 style="float: right; padding: 3px 0"
                 type="text"
                 plain
@@ -134,8 +143,7 @@ export default {
     ...mapState(["mystudents"]),
     ...mapState(["student"]),
     ...mapState(["stutor"]),
-    ...mapState(["isUpdatePwd"]),
-    ...mapState(["isUpdateNote"])
+    ...mapState(["isUpdatePwd"])
     // sNumber() {
     //   if (this.mystudents.length() == null) {
     //     return 0;
@@ -143,6 +151,11 @@ export default {
     // }
   },
   methods: {
+    open22() {
+      (this.maxStuNum = this.tutor.maxStuNum),
+        (this.scopeStuNum = this.tutor.scopeStuNum),
+        (this.open2 = true);
+    },
     success() {
       this.$message({
         message: "修改成功",

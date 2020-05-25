@@ -41,10 +41,16 @@
                     <el-button
                       size="mini"
                       type="primary"
-                      :disabled="!(checkedDirections.length >= 2)"
+                      :disabled="
+                        checkedDirections.length < 2 ||
+                          scope.row.nowStuNum == scope.row.maxStuNum
+                      "
                       @click="handleChoose(scope.$index, scope.row)"
                     >
-                      选择
+                      <p v-if="scope.row.nowStuNum == scope.row.maxStuNum">
+                        已满
+                      </p>
+                      <p v-else>选择</p>
                     </el-button>
                   </template>
                 </el-table-column>

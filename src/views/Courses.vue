@@ -3,11 +3,33 @@
     <el-row>
       <el-col :span="2"><div class="grid-content bg-purple"></div></el-col>
       <el-col :span="20">
+        <div class="grid-content button-container">
+          <el-button
+            @click="changeItem1"
+            icon="el-icon-s-goods
+"
+          >
+            我的课程
+          </el-button>
+          <el-button @click="changeItem2" icon="el-icon-user-solid">
+            录入学生
+          </el-button>
+          <el-button @click="changeItem3" icon="el-icon-s-marketing">
+            学生排名
+          </el-button>
+        </div>
+      </el-col>
+      <el-col :span="2"><div class="grid-content bg-purple"></div></el-col>
+    </el-row>
+    <el-row :hidden="flag != 1">
+      <el-col :span="2"><div class="grid-content bg-purple"></div></el-col>
+      <el-col :span="20">
         <div class="grid-content bg-purple-light">
           <el-card class="box-card">
             <div slot="header" class="clearfix">
               <span>我的课程</span>
               <el-button
+                icon="el-icon-circle-plus-outline"
                 style="float: right; padding: 3px 0"
                 type="text"
                 @click="open2 = true"
@@ -30,24 +52,24 @@
                 ></el-table-column>
                 <el-table-column
                   prop="weight"
-                  label="比重(%)"
+                  label="权重(1.0-2.0)"
                   width="180"
                 ></el-table-column>
                 <el-table-column label="操作" width="300">
                   <template slot-scope="scope">
                     <el-button
-                      size="mini"
+                      icon="el-icon-edit"
+                      circle
                       @click="handleEdit(scope.$index, scope.row)"
-                    >
-                      编辑
-                    </el-button>
+                      style="background-color: #ccccff;"
+                    ></el-button>
+
                     <el-button
-                      size="mini"
                       type="danger"
+                      icon="el-icon-delete"
+                      circle
                       @click="handleDelete(scope.$index, scope.row)"
-                    >
-                      删除
-                    </el-button>
+                    ></el-button>
                   </template>
                 </el-table-column>
               </el-table>
@@ -108,7 +130,7 @@
       <el-col :span="2"><div class="grid-content bg-purple"></div></el-col>
     </el-row>
 
-    <el-row>
+    <el-row :hidden="flag != 2">
       <el-col :span="2"><div class="grid-content bg-purple"></div></el-col>
       <el-col :span="20">
         <div class="grid-content bg-purple-light">
@@ -170,7 +192,7 @@
               </el-table>
               <el-button
                 type="primary"
-                style="float: right; margin:10px;"
+                style="float: right; margin:10px;background-color: #ccccff; border-color: #ccccff"
                 @click="buildStudent"
               >
                 录入学生
@@ -182,7 +204,7 @@
       <el-col :span="2"><div class="grid-content bg-purple"></div></el-col>
     </el-row>
 
-    <el-row>
+    <el-row :hidden="flag != 3">
       <el-col :span="2"><div class="grid-content bg-purple"></div></el-col>
       <el-col :span="20">
         <div class="grid-content bg-purple-light">
@@ -259,7 +281,8 @@ export default {
       }
     ],
     value: "", //前端传来的课程id
-    cid: null
+    cid: null,
+    flag: 1
   }),
   computed: {
     ...mapState(["tcourses"]),
@@ -267,11 +290,23 @@ export default {
     ...mapState(["studentUsers"])
   },
   methods: {
+    changeItem1() {
+      this.flag = 1;
+    },
+    changeItem2() {
+      this.flag = 2;
+    },
+    changeItem3() {
+      this.flag = 3;
+      this.$store.dispatch("excuteStudent");
+    },
     excuteStudent() {
       this.$store.dispatch("excuteStudent");
     },
     handleEdit(index, row) {
       this.updateItemRow = row;
+      this.weight0 = row.weight;
+      this.name0 = row.name;
       console.log(index + 1, row);
       this.open1 = true;
     },
@@ -282,14 +317,21 @@ export default {
         type: "warning"
       })
         .then(() => {
-          this.$store.dispatch(DELETE_COURSE, {
-            id: row.id
-          });
-          this.$message({
-            type: "success",
-            message: "删除成功!"
-          });
+          this.$store
+            .dispatch(DELETE_COURSE, {
+              id: row.id
+            })
+            .then(() => {
+              this.$message({
+                type: "success",
+                message: "删除成功!"
+              });
+            })
+            .catch(() => {
+              this.$message.error("删除失败");
+            });
         })
+
         .catch(() => {
           this.$message({
             type: "info",
@@ -407,6 +449,15 @@ export default {
   width: 100%;
 }
 /* 卡片 */
+.button-container > .el-button {
+  font-size: 15px;
+  background-color: #ccccff;
+  color: #5fa1a1;
+  width: 150px;
+  height: 70px;
+  border-radius: 40px;
+  margin-right: 10px;
+}
 
 /* 选课列表 */
 .el-input {

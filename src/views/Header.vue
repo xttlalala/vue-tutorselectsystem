@@ -1,8 +1,16 @@
 <template>
   <div>
     <div class="title">
-      <p v-if="tutor">欢迎您！{{ tname }}老师</p>
-      <p v-else>欢迎您！{{ sname }}同学</p>
+      <div class="content">
+        <p v-if="tutor">欢迎您！{{ tname }}老师</p>
+        <p v-else>欢迎您！{{ sname }}同学</p>
+        <el-button
+          circle
+          type="danger"
+          icon="el-icon-switch-button"
+          @click="logout"
+        ></el-button>
+      </div>
     </div>
   </div>
 </template>
@@ -37,6 +45,12 @@ export default {
         return null;
       }
     }
+  },
+  methods: {
+    logout() {
+      sessionStorage.clear();
+      window.location.reload();
+    }
   }
 };
 </script>
@@ -48,9 +62,19 @@ export default {
   background-color: #99cccc;
   color: white;
   width: 99%;
-  height: 70px;
+  height: 75px;
   padding: 20px 40px;
-  text-align: right;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.12), 0 0 6px rgba(0, 0, 0, 0.04);
+}
+.content {
+  text-align: right;
+  float: right;
+  display: flex;
+}
+.content > .el-button {
+  margin-left: 20px;
+}
+.content p {
+  margin-top: 10px;
 }
 </style>

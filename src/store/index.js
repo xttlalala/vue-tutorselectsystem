@@ -11,21 +11,14 @@ const myState = {
   exception: { message: null },
   isLogin: false,
   isUpdatePwd: false,
-  isUpdateNote: false,
   isUpdateDirections: false,
   isBuildStudents: false,
-  isDeleteCourse: false,
-  isAddCourse: false,
-  isUpdateCourse: false,
-  isUpdateSdir: false,
-  isDeleteRelation: false,
   addDirection: false,
   studentUsers: null,
   tutor: null,
   directions: null,
   tcourses: null,
   mystudents: null,
-  gotStudent: null,
   student: null,
   stutor: null,
   tutors: null,
@@ -43,25 +36,25 @@ const myMutations = {
     state.isUpdatePwd = data;
   },
   [types.UPDATE_NOTE](state, data) {
-    state.isUpdateNote = data;
+    state.tutor = data;
   },
   [types.UPDATE_DIRECTIONS](state, data) {
     state.isUpdateDirections = data;
   },
   [types.DELETE_COURSE](state, data) {
-    state.isDeleteCourse = data;
+    state.tcourses = data;
   },
   [types.ADD_COURSE](state, data) {
-    state.isAddCourse = data;
+    state.tcourses = data;
   },
   [types.UPDATE_COURSE](state, data) {
-    state.isUpdateCourse = data;
+    state.tcourses = data;
   },
   [types.BUILD_STUDENT](state, data) {
     state.isBuildStudents = data;
   },
   [types.ADD_STUDENT](state, data) {
-    state.gotStudent = data;
+    state.mystudents = data;
   },
   [types.CHOOSE_TUTOR](state, data) {
     state.choose = data;
@@ -70,10 +63,10 @@ const myMutations = {
     state.addDirection = data;
   },
   [types.UPDATE_SDIR](state, data) {
-    state.isUpdateSdir = data;
+    state.mystudents = data;
   },
   [types.DELETE_RELATION](state, data) {
-    state.isDeleteRelation = data;
+    state.mystudents = data;
   },
   tutor(state, data) {
     state.tutor = data;
@@ -146,53 +139,59 @@ const myActions = {
     let resp = await axios.get("tutorsindex");
     commit("tutors", resp.data.tutors);
   },
+  //主页
   async [types.UPDATE_PWD]({ commit }, data) {
     let resp = await axios.patch("updatePwd", data);
     commit(types.UPDATE_PWD, true);
   },
   async [types.UPDATE_NOTE]({ commit }, data) {
     let resp = await axios.patch("tutor/settings", data);
-    commit(types.UPDATE_NOTE, true);
+    commit(types.UPDATE_NOTE, resp.data.tutor);
   },
   async [types.UPDATE_DIRECTIONS]({ commit }, data) {
     let resp = await axios.post("tutor/updateDirections", data);
     commit(types.UPDATE_DIRECTIONS, true);
   },
-  async [types.DELETE_COURSE]({ commit }, data) {
-    let resp = await axios.post("tutor/deleteCourse", data);
-    commit(types.DELETE_COURSE, true);
-  },
+  //课程
   async [types.ADD_COURSE]({ commit }, data) {
     let resp = await axios.post("tutor/addcourse", data);
-    commit(types.ADD_COURSE, true);
+    commit(types.ADD_COURSE, resp.data.tcourses);
   },
   async [types.UPDATE_COURSE]({ commit }, data) {
     let resp = await axios.patch("tutor/updateCourse", data);
-    commit(types.UPDATE_COURSE, true);
+    commit(types.UPDATE_COURSE, resp.data.tcourses);
   },
+  async [types.DELETE_COURSE]({ commit }, data) {
+    let resp = await axios.post("tutor/deleteCourse", data);
+    commit(types.DELETE_COURSE, resp.data.tcourses);
+  },
+  //导入学生
   async [types.BUILD_STUDENT]({ commit }, data) {
     let resp = await axios.post("tutor/buildStudent", data);
     commit(types.BUILD_STUDENT, true);
   },
+  //我的学生
   async [types.ADD_STUDENT]({ commit }, data) {
     let resp = await axios.post("tutor/addStudent", data);
-    commit(types.ADD_STUDENT, resp.data.student);
+    commit(types.ADD_STUDENT, resp.data.tstudents);
   },
+  async [types.UPDATE_SDIR]({ commit }, data) {
+    let resp = await axios.post("tutor/updateSdir", data);
+    commit(types.UPDATE_SDIR, resp.data.tstudents);
+  },
+  async [types.DELETE_RELATION]({ commit }, data) {
+    let resp = await axios.post("tutor/deleteRelation", data);
+    commit(types.DELETE_RELATION, resp.data.tstudents);
+  },
+  //学生选导师
   async [types.CHOOSE_TUTOR]({ commit }, data) {
     let resp = await axios.post("choice", data);
     commit(types.CHOOSE_TUTOR, resp.data.choose);
   },
+  //导师添加方向
   async [types.ADD_DIRECTION]({ commit }, data) {
     await axios.post("addDirection", data);
     commit(types.ADD_DIRECTION, true);
-  },
-  async [types.UPDATE_SDIR]({ commit }, data) {
-    await axios.post("tutor/updateSdir", data);
-    commit(types.UPDATE_SDIR, true);
-  },
-  async [types.DELETE_RELATION]({ commit }, data) {
-    await axios.post("tutor/deleteRelation", data);
-    commit(types.DELETE_RELATION, true);
   }
 };
 export default new Vuex.Store({
