@@ -3,10 +3,13 @@ module.exports = {
   devServer: {
     //默认端口
     port: 8081,
+    // port: 9000, //部署用
+    // disableHostCheck: true,
     //设置代理
     proxy: {
       "/api/": {
         //目标api地址
+        // target: "http://39.97.116.91.8000", //部署用
         target: "http://localhost:8080",
         //将主机标头的原点更改为目标URL
         changeOrigin: true

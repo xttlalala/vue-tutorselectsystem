@@ -24,11 +24,20 @@
                 修改密码
               </el-button>
             </div>
-            <div class="item" v-if="tutor">姓名: {{ tutor.user.name }}</div>
-            <div class="item" v-else>姓名: {{ student.user.name }}</div>
-            <div class="item" v-if="tutor">工号：{{ tutor.user.number }}</div>
-            <div class="item" v-else>学号：{{ student.user.number }}</div>
-            <div class="item" v-if="student">我的导师：{{ stutor }}</div>
+            <template v-if="istutor">
+              <div class="item">姓名: {{ tutor.user.name }}</div>
+            </template>
+            <template v-if="isstudent">
+              <div class="item">姓名: {{ student.user.name }}</div>
+            </template>
+            <template v-if="istutor">
+              <div class="item">工号：{{ tutor.user.number }}</div>
+            </template>
+            <template v-if="isstudent">
+              <div class="item">学号：{{ student.user.number }}</div>
+            </template>
+
+            <div class="item" v-if="isstudent">我的导师：{{ stutor }}</div>
             <el-dialog title="修改密码" :visible.sync="open1">
               <el-form>
                 <el-form-item label="输入新密码" :label-width="formLabelWidth">
@@ -121,10 +130,14 @@ export default {
   created() {
     if (sessionStorage.getItem("role") == "6983f953b49c88210cb9") {
       this.$store.dispatch("backendindex"),
-        this.$store.dispatch("mystudentsindex");
+        this.$store.dispatch("mystudentsindex").then(() => {
+          this.istutor = true;
+        });
     }
     if (sessionStorage.getItem("role") == "bb63e5f7e0f2ffae845c") {
-      this.$store.dispatch("studentindex");
+      this.$store.dispatch("studentindex").then(() => {
+        this.isstudent = true;
+      });
     }
   },
   data() {
@@ -135,7 +148,9 @@ export default {
       password0: null,
       password1: null,
       maxStuNum: null,
-      scopeStuNum: null
+      scopeStuNum: null,
+      istutor: false,
+      isstudent: false
     };
   },
   computed: {
@@ -144,6 +159,7 @@ export default {
     ...mapState(["student"]),
     ...mapState(["stutor"]),
     ...mapState(["isUpdatePwd"])
+
     // sNumber() {
     //   if (this.mystudents.length() == null) {
     //     return 0;
@@ -173,7 +189,8 @@ export default {
             this.success();
           });
       } else {
-        alert("两次密码不一致");
+        this.$message.error();
+        ("两次密码不一致");
       }
     },
     updateNote() {

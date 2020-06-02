@@ -108,7 +108,7 @@ export default {
       // this.$store.dispatch("tutorStuNum",{
       //   id:row.id
       // })
-      if (this.student.tutor != null) {
+      if (this.student.tutor != null || this.choose == 1) {
         this.$message.error("你已经有导师了，不可重复选择");
       } else if (row.nowStuNum == row.maxStuNum) {
         this.$message.error("导师人数已满");

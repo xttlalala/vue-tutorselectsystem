@@ -76,7 +76,7 @@
             </div>
 
             <el-dialog title="添加课程" :visible.sync="open2">
-              <el-form>
+              <el-form ref="a">
                 <el-form-item label="课程名称" :label-width="formLabelWidth">
                   <el-input
                     type="text"
@@ -355,7 +355,7 @@ export default {
         })
         .then(() => {
           this.open2 = false;
-          this.success();
+          (this.name = null), (this.weight = null), this.success();
         });
     },
     updateCourse() {
@@ -410,15 +410,21 @@ export default {
       }
       // this.buildStudents = datas;
       console.log(datas);
-      this.$store.dispatch(BUILD_STUDENT, datas).then(() => {
-        if (this.isBuildStudents == true) {
-          this.$message({
-            message: "创建成功！",
-            type: "success"
-          });
-        }
-      });
-      loading.close();
+      this.$store
+        .dispatch(BUILD_STUDENT, datas)
+        .then(() => {
+          if (this.isBuildStudents == true) {
+            loading.close();
+            this.$message({
+              message: "创建成功！",
+              type: "success"
+            });
+          }
+        })
+        .catch(() => {
+          loading.close();
+          this.$message.error("创建失败");
+        });
     }
   }
 };
