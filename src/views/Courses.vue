@@ -1,8 +1,8 @@
 <template>
   <div class="container">
     <el-row>
-      <el-col :span="2"><div class="grid-content bg-purple"></div></el-col>
-      <el-col :span="20">
+      <el-col :span="1"><div class="grid-content bg-purple"></div></el-col>
+      <el-col :span="22">
         <div class="grid-content button-container">
           <el-button
             @click="changeItem1"
@@ -19,11 +19,11 @@
           </el-button>
         </div>
       </el-col>
-      <el-col :span="2"><div class="grid-content bg-purple"></div></el-col>
+      <el-col :span="1"><div class="grid-content bg-purple"></div></el-col>
     </el-row>
     <el-row :hidden="flag != 1">
-      <el-col :span="2"><div class="grid-content bg-purple"></div></el-col>
-      <el-col :span="20">
+      <el-col :span="1"><div class="grid-content bg-purple"></div></el-col>
+      <el-col :span="22">
         <div class="grid-content bg-purple-light">
           <el-card class="box-card">
             <div slot="header" class="clearfix">
@@ -127,12 +127,12 @@
           </el-card>
         </div>
       </el-col>
-      <el-col :span="2"><div class="grid-content bg-purple"></div></el-col>
+      <el-col :span="1"><div class="grid-content bg-purple"></div></el-col>
     </el-row>
 
     <el-row :hidden="flag != 2">
-      <el-col :span="2"><div class="grid-content bg-purple"></div></el-col>
-      <el-col :span="20">
+      <el-col :span="1"><div class="grid-content bg-purple"></div></el-col>
+      <el-col :span="22">
         <div class="grid-content bg-purple-light">
           <el-card class="box-card">
             <div slot="header" class="clearfix">
@@ -201,12 +201,12 @@
           </el-card>
         </div>
       </el-col>
-      <el-col :span="2"><div class="grid-content bg-purple"></div></el-col>
+      <el-col :span="1"><div class="grid-content bg-purple"></div></el-col>
     </el-row>
 
     <el-row :hidden="flag != 3">
-      <el-col :span="2"><div class="grid-content bg-purple"></div></el-col>
-      <el-col :span="20">
+      <el-col :span="1"><div class="grid-content bg-purple"></div></el-col>
+      <el-col :span="22">
         <div class="grid-content bg-purple-light">
           <el-card class="box-card">
             <div slot="header" class="clearfix">
@@ -242,7 +242,7 @@
           </el-card>
         </div>
       </el-col>
-      <el-col :span="2"><div class="grid-content bg-purple"></div></el-col>
+      <el-col :span="1"><div class="grid-content bg-purple"></div></el-col>
     </el-row>
   </div>
 </template>

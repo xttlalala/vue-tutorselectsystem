@@ -1,8 +1,8 @@
 <template>
   <div class="container">
     <el-row>
-      <el-col :span="2"><div class="grid-content bg-purple"></div></el-col>
-      <el-col :span="20">
+      <el-col :span="1"><div class="grid-content bg-purple"></div></el-col>
+      <el-col :span="22">
         <div class="grid-content bg-purple-light">
           <el-card class="box-card">
             <div slot="header" class="clearfix">
@@ -65,11 +65,11 @@
           </el-card>
         </div>
       </el-col>
-      <el-col :span="2"><div class="grid-content bg-purple"></div></el-col>
+      <el-col :span="1"><div class="grid-content bg-purple"></div></el-col>
     </el-row>
     <el-row v-if="tutor">
-      <el-col :span="2"><div class="grid-content bg-purple"></div></el-col>
-      <el-col :span="20">
+      <el-col :span="1"><div class="grid-content bg-purple"></div></el-col>
+      <el-col :span="22">
         <div class="grid-content bg-purple-light">
           <el-card class="box-card">
             <div slot="header" class="clearfix">
@@ -93,7 +93,7 @@
           </el-card>
         </div>
       </el-col>
-      <el-col :span="2"><div class="grid-content bg-purple"></div></el-col>
+      <el-col :span="1"><div class="grid-content bg-purple"></div></el-col>
       <el-dialog title="编辑招收学生信息" :visible.sync="open2">
         <el-form>
           <el-form-item label="最大学生数" :label-width="formLabelWidth">
