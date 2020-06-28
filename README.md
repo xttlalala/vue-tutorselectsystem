@@ -4,8 +4,9 @@
 在传统学生导师互选简单操作流程外，导师可以提前加入心仪学生；可以自由设置录取学生的标准，系统按照导师给出的标准计算出符合要求的学生，符合要求的学生才可进行选择，学生在选择时不符合要求及时告知，以不影响学生对其他老师的选择。添加了对学生毕业设计方向的管理，指导学生更加方便。
 
 ## Install
-Node.js v12.16.1
-Visual Studio Code
+vue 2.6.11<br/>
+Node.js v12.16.1<br/>
+Visual Studio Code<br/>
 
 ## Function
 >前端。主要基于vue 2.6.11框架实现，使用elementUI框架提供友好美化的互交操作。使用vuex管理全局数据状态，引入axios-mock-adapter模拟后端数据，通过axios拦截器实现请求全局异常处理。token保存在SessionStorage防止页面刷新登录数据丢失，基于后端返回的角色权限动态生成路由信息。基于SheetJS直接通过JavaScript读取Excel成绩单表格转为json数据，减轻Java后端基于POI读写的资源消耗。
